@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>登录页</title>
+    <link rel="stylesheet" type="text/css" href="./css/base.css" />
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+    <script type="text/javascript" src="./js/vue.js"></script>
+
+    <style>
+        .radio-box{
+  display: inline-block;
+  position: relative;
+  height: 25px;
+  line-height: 25px;
+  margin-right: 5px;
+}
+.input-radio {
+  display: inline-block;
+  position: absolute;
+  opacity: 0;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  left: 0px;
+  outline: none;
+  -webkit-appearance: none;
+}
+.radio {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: url(../image/icon-uncheck.png);
+  background-repeat: no-repeat;
+
+  background-size: 100% 100%;
+ 
+}
+.on {
+  background-image: url(../image/icon-check.png);
+  background-size: 100% 100%;
+  
+}
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <h3>问卷调查</h3>
+        <form action="">
+
+            <div v-for="(item,index) in questionList" :key="index">
+                <h3>您有近视吗？</h3>
+                <div class="radio-box" v-for="(answer,idx) in item.answer_list" :key="idx" class="flex-row flex-start flex-middle">
+                    <span class="radio" :class="{'on':answer.isChecked}"></span>
+                    <input class="input-radio" type="radio" :id="item.id" :value="answer.value" v-model="pick[index]"
+                        @change="radio_change($event,index,idx)">{{answer.value}}
+
+                </div>
+            </div>
+            <button @click="submitForm($event)">提交</button>
+
+        </form>
+
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#box',
+        data: {
+            pick: [],
+            questionList: [
+                {
+                    id: 1,
+                    topic: '家长是否有带眼镜？',
+                    answer_list: [
+                        { name: 'A', value: '视力正常', isChecked: false },
+                        { name: 'B', value: '近视', isChecked: false },
+                        { name: 'C', value: '轻度近视', isChecked: false }
+                    ]
+                }
+            ]
+        },
+        mounted: function () {
+
+
+
+
+        },
+        methods: {
+            radio_change: function (el, index, idx) {
+                console.log(el)
+                console.log(idx)
+                var t = this;
+                var radio_value = el.target.value;
+                var questionList = t.questionList;
+                t.questionList.forEach((item) => {
+                    item.answer_list.forEach((one) => {
+                        one.isChecked = false;
+                    });
+
+                });
+                t.questionList[index].answer_list[idx].isChecked = true;
+                console.log(t.questionList)
+
+            }
+
+
+
+
+        }
+
+    });
+
+
+</script>
+
+</html>
